@@ -56,8 +56,3 @@ steps:
 #  - sleep 10
 #  - aws --endpoint-url=http://localstack:4566 ec2 describe-instances
 #  - aws --endpoint-url=http://localstack:4566 ec2 terminate-instances --instance-ids=$(aws --endpoint-url=http://localstack:4566 ec2 describe-instances | jq -r '.Reservations[0].Instances[0].InstanceId')
-#
-#---
-#kind: secret
-#name: localstack_api_key
-#data: __redacted__
