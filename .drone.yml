@@ -8,7 +8,8 @@ trigger:
 
 steps:
 - name: test
-  image: alpine
+  image: golang:1.18
   commands:
-  - sleep 10
+  - go build
+  - go test
   
