@@ -6,7 +6,7 @@ trigger:
   branch:
   - main
 
-services:
+steps:
 - name: test
   image: alpine
   commands:
