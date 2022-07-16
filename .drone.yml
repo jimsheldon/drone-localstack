@@ -1,59 +1,21 @@
 kind: pipeline
 type: docker
-name: localstack
-
-trigger:
-  branch:
-  - main
-
-services:
-- name: localstack
-  image: localstack/localstack
-#  environment:
-#    LOCALSTACK_API_KEY:
-#      from_secret: localstack_api_key
-#    DOCKER_HOST: "unix:///var/run/docker.sock"
-#    EC2_VM_MANAGER: docker
-#    HOST_TMP_FOLDER: /tmp:-/tmp/localstack
-#  volumes:
-#  - name: docker-socket
-#    path: /var/run/docker.sock
-#  - name: workspace-tmp
-#    path: /tmp/localstack
-
-#volumes:
-#- name: docker-socket
-#  host:
-#    path: /var/run/docker.sock
-#- name: workspace-tmp
-#  temp: {}
+name: mysql-test
+    
+clone:
+  depth: 1
 
 steps:
-- name: localstack-up
-  image: alpine/curl:3.14
-  commands:
-  # Checks to see that localstack service is up and running
-  - echo -n waiting for localstack && STACK=down && while [ "$STACK" == "down" ]; do echo -n "." && sleep 3 && curl -sm 1 localstack:4566/health >>/dev/null && STACK=up; done
-  - curl localstack:4566/health
 
-#- name: ami-registration
-#  image: meltwaterfoundation/drone-docker
-#  volumes:
-#  - name: docker-socket
-#    path: /var/run/docker.sock
-#  commands:
-#  - docker pull amazonlinux
-#  - docker tag amazonlinux localstack-ec2/amzn-2-ami:ami-000001
-#
-#- name: localstack-testing
-#  image: meltwaterfoundation/drone-awscli
-#  environment:
-#    AWS_DEFAULT_REGION: eu-west-1
-#  commands:
-#  - apk add bind-tools jq
-#  - host localstack
-#  - aws --endpoint-url=http://localstack:4566 ec2 create-key-pair --key-name mine --query "KeyMaterial" --output text > mine.pem
-#  - aws --endpoint-url=http://localstack:4566 ec2 run-instances --image-id ami-000001 --count 1 --instance-type=t2.micro --key-name mine
-#  - sleep 10
-#  - aws --endpoint-url=http://localstack:4566 ec2 describe-instances
-#  - aws --endpoint-url=http://localstack:4566 ec2 terminate-instances --instance-ids=$(aws --endpoint-url=http://localstack:4566 ec2 describe-instances | jq -r '.Reservations[0].Instances[0].InstanceId')
+- name: mysql test
+  image: mysql
+  commands:
+  - sleep 15
+  - mysql -u root -h database --execute="SELECT VERSION();"
+
+services:
+  - name: database
+    image: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: test
