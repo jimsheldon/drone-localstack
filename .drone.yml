@@ -6,18 +6,12 @@ trigger:
   branch:
   - main
 
-services:
-- name: localstack
-  image: localstack/localstack
-
 steps:
 
-- name: localstack-up
-  image: alpine/curl:3.14
+- name: git
+  image: alpine/git
   commands:
-  # Checks to see that localstack service is up and running
-  - echo -n waiting for localstack && STACK=down && while [ "$STACK" == "down" ]; do echo -n "." && sleep 3 && curl -sm 1 localstack:4566/health >>/dev/null && STACK=up; done
-  - curl localstack:4566/health
+  - git clone http://gitea-http:3000/demo/drone-quickstart.git
 
 - name: curl
   image: alpine:3
