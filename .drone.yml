@@ -6,6 +6,7 @@ trigger:
   branch:
   - main
 
+services:
 - name: localstack
   image: localstack/localstack
 
