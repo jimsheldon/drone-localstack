@@ -26,3 +26,8 @@ steps:
   - host gitea-127.0.0.1.sslip.io
   - host drone
   - curl drone:80
+
+- name: cat-hosts
+  image: alpine:3
+  commands:
+  - cat /etc/hosts
