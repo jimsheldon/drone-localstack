@@ -10,5 +10,7 @@ steps:
 - name: curl
   image: alpine:3
   commands:
-  - apk add bind-tools
+  - apk add bind-tools curl
   - host gitea-127.0.0.1.sslip.io
+  - host drone
+  - curl drone:80
