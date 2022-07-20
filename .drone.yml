@@ -11,7 +11,7 @@ steps:
 - name: git
   image: alpine/git
   commands:
-  - git clone http://gitea-http:3000/demo/drone-quickstart.git
+  - git clone http://gitea-http.gitea:3000/demo/drone-quickstart.git
 
 - name: curl
   image: alpine:3
